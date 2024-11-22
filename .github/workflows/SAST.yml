@@ -2,7 +2,7 @@ on:
   workflow_dispatch: {}
   push:
     branches:
-    - main
+    - snyk-fix-aeaf091740625b6f39841a4c0e74f3d3
     paths:
     - .github/workflows/SAST.yml
 name: SAST comparison
