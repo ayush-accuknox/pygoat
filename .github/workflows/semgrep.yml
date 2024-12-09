@@ -4,9 +4,9 @@ on:
     branches:
     - main
     paths:
-    - .github/workflows/SAST.yml
+    - .github/workflows/semmgrep.yml
 
-name: SAST comparison
+name: semgrep
 
 jobs:
   semgrep-free:
