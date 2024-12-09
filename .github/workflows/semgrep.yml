@@ -4,8 +4,10 @@ on:
     branches:
     - main
     paths:
-    - .github/workflows/semgrep.yml
-name: Semgrep Findings
+    - .github/workflows/SAST.yml
+
+name: SAST comparison
+
 jobs:
   semgrep-free:
     name: Semgrep-free
@@ -17,9 +19,9 @@ jobs:
     - run: |
         # Run Semgrep scan and store the output in JSON
         semgrep scan --json --json-output /tmp/semgrep.json
-        
-        # Capture GitHub-related variables and prepend them to the Semgrep output
-        metadata_json=$(jq -n \
+
+        # Capture GitHub-related variables and store them in a metadata JSON file
+        jq -n \
           --arg repo "${{ github.repository }}" \
           --arg sha "${{ github.sha }}" \
           --arg ref "${{ github.ref }}" \
@@ -37,12 +39,11 @@ jobs:
             github_url: $github_url,
             github_run_url: $github_run_url,
             source: $source
-          }')
-        # Append the metadata to the Semgrep JSON output
-        semgrep_json=$(cat /tmp/semgrep.json)
-        combined_json=$(echo "$metadata_json" | jq --argjson semgrep "$semgrep_json" '. + $semgrep')
-        # Save the combined JSON to the output file
-        echo "$combined_json" > /tmp/combined_output.json
+          }' > /tmp/metadata.json
+
+        # Combine metadata and Semgrep JSON files using jq
+        jq -s '.[0] + .[1]' /tmp/metadata.json /tmp/semgrep.json > /tmp/combined_output.json
+
     - name: View the output
       run: cat /tmp/combined_output.json
 
