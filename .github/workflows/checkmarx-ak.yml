@@ -1,12 +1,10 @@
 name: Checkmarx Sarif Integration
 
 on:
+  workflow_dispatch: {}
   push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
-  schedule:
-    - cron: '18 2 * * 5'
+    branches:
+    - main
 
 permissions:
   security-events: write
