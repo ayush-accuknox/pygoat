@@ -1,4 +1,4 @@
-name: Checkmarx Sarif Integration
+name: Checkmarx Container Scan
 
 # Controls when the workflow will run
 on:
